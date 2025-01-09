@@ -1,3 +1,15 @@
 <h1>Welcome to {{ title }}!</h1>
 
+<div class="keyboard">
+    <div class="row" *ngFor="let row of keyboardRows">
+        <button *ngFor="let btn of row" [ngClass]="{'roboto': true}" (mousedown)="onMouseDown($event)"
+            (mouseup)="onMouseUp($event)">
+            {{ btn | uppercase }}
+        </button>
+    </div>
+    <div class="row">
+        <button id="space" class="roboto" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)">SPACE</button>
+    </div>
+</div>
+
 <router-outlet />
