@@ -1,49 +1,49 @@
-@use "sass:math";
+@use 'sass:math';
 
 $buttonSize: 60px;
 $gap: 12px;
 
 button {
-    cursor: pointer;
-    font-size: 18px;
+  cursor: pointer;
+  font-size: 18px;
 
-    width: $buttonSize;
-    height: $buttonSize;
+  width: $buttonSize;
+  height: $buttonSize;
 
-    border: 1px solid black;
-    border-radius: 15px;
+  border: 1px solid black;
+  border-radius: 15px;
 
-    &.pressed {
-        position: relative;
-        top: 3px;
-    }
+  &.pressed {
+    position: relative;
+    top: 3px;
+  }
 }
 
 .keyboard {
-    display: flex;
-    flex-flow: column nowrap;
-    gap: $gap;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: $gap;
 }
 
 .row {
-    display: flex;
-    flex-flow: row nowrap;
-    gap: $gap;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: $gap;
 
-    &:nth-child(2) {
-        margin-left: math.div($buttonSize, 2);
+  &:nth-child(2) {
+    margin-left: math.div($buttonSize, 2);
+  }
+
+  &:nth-child(3) {
+    margin-left: math.div(3 * $buttonSize, 2);
+  }
+
+  &:nth-child(4) {
+    margin-left: 3 * $buttonSize;
+
+    >* {
+      width: 5 * $buttonSize;
+      height: $buttonSize;
     }
-
-    &:nth-child(3) {
-        margin-left: math.div(3 * $buttonSize, 2);
-    }
-
-    &:nth-child(4) {
-        margin-left: 3 * $buttonSize;
-
-        >* {
-            width: 5 * $buttonSize;
-            height: $buttonSize;
-        }
-    }
+  }
 }

@@ -1,0 +1,18 @@
+<div class="text">
+  @for (letter of letters(); track letter.id) {
+    <div class="letter" [ngClass]="{ read: letter.id < activeLetter() }">
+      <div class="code">
+        @for (code of letter.morseCode; track $index) {
+          <span
+            [ngClass]="{
+              active:
+                letter.id === activeLetter() && activeMorseCode() === $index,
+            }"
+            >{{ code }}</span
+          >
+        }
+      </div>
+      <div class="key">{{ letter.key | uppercase }}</div>
+    </div>
+  }
+</div>

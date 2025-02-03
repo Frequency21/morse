@@ -1,0 +1,33 @@
+.text {
+  font-family: 'Roboto', serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: 'wdth' 100;
+
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.letter {
+  font-size: 24px;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+
+  &.read {
+    color: gray;
+  }
+}
+
+.code {
+  font-family: monospace;
+
+  .active {
+    font-weight: bold;
+    font-size: 28px;
+  }
+}
