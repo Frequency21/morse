@@ -1,17 +1,38 @@
 @use 'sass:math';
 
-$buttonSize: 60px;
-$gap: 12px;
+$button-size-lg: 60px;
+$gap-lg: 12px;
+$grid-size-lg: $button-size-lg + $gap-lg;
+$font-size-lg: 18px;
+
+$button-size-sm: 40px;
+$gap-sm: 8px;
+$grid-size-sm: $button-size-sm + $gap-sm;
+$font-size-sm: 16px;
+
+@mixin desktop {
+  @media only screen and (min-width: 710px) {
+    @content;
+  }
+}
 
 button {
+  user-select: none;
   cursor: pointer;
-  font-size: 18px;
+  -webkit-tap-highlight-color: transparent;
 
-  width: $buttonSize;
-  height: $buttonSize;
-
+  font-size: $font-size-sm;
+  width: $button-size-sm;
+  height: $button-size-sm;
   border: 1px solid black;
-  border-radius: 15px;
+  border-radius: 10px;
+
+  @include desktop {
+    font-size: $font-size-lg;
+    width: $button-size-lg;
+    height: $button-size-lg;
+    border-radius: 15px;
+  }
 
   &.pressed {
     position: relative;
@@ -22,28 +43,60 @@ button {
 .keyboard {
   display: flex;
   flex-flow: column nowrap;
-  gap: $gap;
+  align-items: center;
+}
+
+.row-wrapper {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: $gap-sm;
+
+  @include desktop() {
+    gap: $gap-lg;
+  }
 }
 
 .row {
   display: flex;
   flex-flow: row nowrap;
-  gap: $gap;
+  gap: $gap-sm;
+
+  @include desktop() {
+    gap: $gap-lg;
+  }
 
   &:nth-child(2) {
-    margin-left: math.div($buttonSize, 2);
+    margin-left: math.div($grid-size-sm, 2);
+
+    @include desktop() {
+      margin-left: math.div($grid-size-lg, 2);
+    }
   }
 
   &:nth-child(3) {
-    margin-left: math.div(3 * $buttonSize, 2);
+    margin-left: math.div(3 * $grid-size-sm, 2);
+
+    @include desktop() {
+      margin-left: math.div(3 * $grid-size-lg, 2);
+    }
   }
 
   &:nth-child(4) {
-    margin-left: 3 * $buttonSize;
+    margin-left: math.div(5 * $grid-size-sm, 2);
 
     >* {
-      width: 5 * $buttonSize;
-      height: $buttonSize;
+      width: 4 * $grid-size-sm + $button-size-sm;
+      height: $button-size-sm;
     }
+
+    @include desktop() {
+      margin-left: math.div(5 * $grid-size-lg, 2);
+
+      >* {
+        width: 4 * $grid-size-lg + $button-size-lg;
+        height: $button-size-lg;
+      }
+    }
+
   }
 }

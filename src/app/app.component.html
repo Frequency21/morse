@@ -1,27 +1,29 @@
-<h1>Welcome to {{ title }}!</h1>
+<h1>Morse Generator</h1>
+
+<div class="keyboard">
+  <div class="row-wrapper">
+    <div class="row" *ngFor="let row of keyboardRows">
+      @for (btn of row; track btn) {
+        <button
+          #button
+          class="roboto"
+          [attr.data-letter]="btn"
+          (pointerdown)="onPointerDown(button)"
+          (pointercancel)="onPointerCancel(button)"
+          (pointerup)="onPointerUp(button, btn)"
+          (contextmenu)="$event.preventDefault()"
+        >
+          {{ btn | uppercase }}
+        </button>
+      }
+    </div>
+  </div>
+</div>
 
 <app-sentence
   [letters]="letters"
   [activeLetter]="activeLetter"
   [activeMorseCode]="activeMorseCode"
 ></app-sentence>
-
-<button (click)="start()">Start</button>
-<button (click)="stop()">Stop</button>
-
-<div class="keyboard">
-  <div class="row" *ngFor="let row of keyboardRows">
-    @for (btn of row; track btn) {
-      <button
-        class="roboto"
-        [attr.data-letter]="btn"
-        (mousedown)="onMouseDown($event)"
-        (mouseup)="onMouseUp($event)"
-      >
-        {{ btn | uppercase }}
-      </button>
-    }
-  </div>
-</div>
 
 <router-outlet />

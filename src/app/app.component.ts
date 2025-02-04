@@ -1,17 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, inject, viewChild } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {
   concatMap,
   delay,
-  filter,
   finalize,
   from,
-  interval,
   map,
   of,
   ReplaySubject,
-  Subject,
   tap,
 } from 'rxjs';
 import { MORSE_TABLE, SPACE } from './app.constants';
@@ -29,48 +26,50 @@ import { AudioService } from './audio.service';
   },
 })
 export class AppComponent {
-  title = 'morse';
-
   letters: Letter[] = [];
   activeLetter = 0;
   activeMorseCode = 0;
-  audioService = inject(AudioService);
-  dit = 50;
-  dah = 3 * this.dit;
-  pause = 2 * this.dit;
+  private audioService = inject(AudioService);
+  private dit = 1000;
+  private dah = 3 * this.dit;
+  private pause = 1000;
+  private letterPause = 3 * this.pause;
 
   letter$ = new ReplaySubject<string>();
   morse$ = this.letter$.pipe(
-    map((key, id) => [key, MORSE_TABLE.get(key)!, id] as const),
-    tap(([key, morseCode, id]) => {
-      console.log(key, morseCode, id);
-      this.letters.push({ id, key, morseCode });
-    }),
-    concatMap(([key, morseCode, id]) => {
-      return from(morseCode).pipe(
-        map((code) => [code, code === '.' ? this.dit : this.dah] as const),
-        concatMap(([code, time]) =>
-          of(code).pipe(
+    map((char, id) => [char, MORSE_TABLE.get(char)!, id] as const),
+    tap(([char, morseCode, id]) =>
+      this.letters.push({ id, char: char, morseCode }),
+    ),
+    concatMap(([char, morseCode]) => {
+      const lastIndex = morseCode.length - 1;
+      return from(
+        morseCode
+          .split('')
+          .map(
+            (code, i) =>
+              [code === '.' ? this.dit : this.dah, i === lastIndex] as const,
+          ),
+      ).pipe(
+        concatMap(([time, isLast]) =>
+          of(null).pipe(
             tap(() => {
-              if (key !== SPACE) {
-                this.audioService.start();
-              }
+              if (char === SPACE) return;
+              this.audioService.start();
             }),
             delay(time),
-            tap(() => {
-              this.audioService.stop();
-              ++this.activeMorseCode;
-            }),
-            delay(this.pause),
+            tap(() => this.audioService.stop()),
+            delay(isLast ? 0 : this.pause),
+            tap(() => ++this.activeMorseCode),
           ),
         ),
+        delay(this.letterPause),
         finalize(() => {
           ++this.activeLetter;
           this.activeMorseCode = 0;
         }),
       );
     }),
-    // TODO
   );
 
   keyboardRows = [
@@ -82,54 +81,47 @@ export class AppComponent {
 
   constructor() {
     this.morse$.subscribe();
-    // interval(1000).subscribe(
-    //   () => (this.activeMorseCode = ++this.activeMorseCode % 4),
-    // );
-    // interval(1000).subscribe(() => ++this.activeLetter);
   }
 
-  stop() {
-    this.audioService.stop();
+  onPointerDown(button: HTMLButtonElement) {
+    button.classList.add('pressed');
   }
 
-  start() {
-    this.audioService.start();
+  onPointerCancel(button: HTMLButtonElement) {
+    button.classList.remove('pressed');
   }
 
-  onKeyboardUp(event: KeyboardEvent) {
-    if (event.key.length !== 1) return;
+  onPointerUp(button: HTMLButtonElement, key: string) {
+    if (key === 'space') {
+      key = SPACE;
+    }
+    this.letter$.next(key);
+    button.classList.remove('pressed');
+  }
+
+  private keyboardEventToChar(event: KeyboardEvent): string {
+    if (event.key.length !== 1) return '';
     let key = event.key.toLowerCase();
-
     const charCode = key.charCodeAt(0);
 
     // replace spaces to underlines
     if (charCode === 32) {
-      key = '␣';
-    } else if (charCode < 97 || charCode > 122) return;
+      key = SPACE;
+    } else if (charCode < 97 || charCode > 122) return '';
 
+    return key;
+  }
+
+  onKeyboardUp(event: KeyboardEvent) {
+    const key = this.keyboardEventToChar(event);
+    if (!key) return;
     document.querySelector(`[data-letter=${key}]`)?.classList.remove('pressed');
     this.letter$.next(key);
   }
 
   onKeyboardDown(event: KeyboardEvent) {
-    if (event.key.length !== 1) return;
-    let key = event.key.toLowerCase();
-
-    const charCode = key.charCodeAt(0);
-
-    // replace spaces to underlines
-    if (charCode === 32) {
-      key = '␣';
-    } else if (charCode < 97 || charCode > 122) return;
-
+    const key = this.keyboardEventToChar(event);
+    if (!key) return;
     document.querySelector(`[data-letter=${key}]`)?.classList.add('pressed');
-  }
-
-  onMouseDown(event: MouseEvent) {
-    (event.target as HTMLElement).classList.add('pressed');
-  }
-
-  onMouseUp(event: MouseEvent) {
-    (event.target as HTMLElement).classList.remove('pressed');
   }
 }

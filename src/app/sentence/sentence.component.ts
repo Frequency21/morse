@@ -3,7 +3,7 @@ import { Component, input } from '@angular/core';
 
 export type Letter = {
   id: number;
-  key: string;
+  char: string;
   morseCode: string;
 };
 

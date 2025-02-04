@@ -27,5 +27,5 @@ export const MORSE_TABLE = new Map<string, string>([
   ['x', '-..-'],
   ['y', '-.--'],
   ['z', '--..'],
-  [SPACE, '...'],
+  [SPACE, '.'],
 ]);

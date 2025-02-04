@@ -4,26 +4,30 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class AudioService {
-  private gain: GainNode;
+  private audioContext: AudioContext;
+  private gainNode: GainNode;
 
   constructor() {
-    const audioContext = new AudioContext();
-    const oscillator = audioContext.createOscillator();
-    this.gain = audioContext.createGain();
-    this.gain.gain.value = 0;
+    this.audioContext = new AudioContext();
+    const oscillator = this.audioContext.createOscillator();
+    this.gainNode = this.audioContext.createGain();
+    this.gainNode.gain.value = 0;
     oscillator.frequency.value = 750;
-    oscillator.connect(this.gain);
-    this.gain.connect(audioContext.destination);
-    document.addEventListener('keydown', () => oscillator.start(0), {
-      once: true,
-    });
+    oscillator.connect(this.gainNode);
+    this.gainNode.connect(this.audioContext.destination);
+    oscillator.start();
   }
 
   start() {
-    this.gain.gain.value = 0.05;
+    if (this.audioContext.state !== 'running') {
+      this.audioContext.resume();
+    }
+    this.gainNode.gain.value = 0.05;
   }
 
   stop() {
-    this.gain.gain.value = 0;
+    if (this.gainNode) {
+      this.gainNode.gain.value = 0;
+    }
   }
 }
