@@ -6,6 +6,7 @@
           #button
           [attr.data-letter]="btn"
           (pointerdown)="onPointerDown(button)"
+          (mouseleave)="onPointerCancel(button)"
           (pointercancel)="onPointerCancel(button)"
           (pointerup)="onPointerUp(button, btn)"
           (contextmenu)="(false)"

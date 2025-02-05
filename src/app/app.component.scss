@@ -52,13 +52,9 @@ button {
 }
 
 .keyboard {
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  margin-block: 24px;
-}
+  overflow-x: auto;
+  padding: 24px;
 
-.row-wrapper {
   display: flex;
   flex-flow: column nowrap;
   gap: $gap-sm;
@@ -68,13 +64,25 @@ button {
   }
 }
 
+.row-wrapper {
+  margin: auto;
+}
+
 .row {
   display: flex;
   flex-flow: row nowrap;
   gap: $gap-sm;
 
+  &:not(:last-child) {
+    margin-bottom: $gap-sm;
+  }
+
   @include media.desktop() {
     gap: $gap-lg;
+
+    &:not(:last-child) {
+      margin-bottom: $gap-lg;
+    }
   }
 
   &:nth-child(2) {
