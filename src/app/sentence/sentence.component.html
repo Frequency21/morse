@@ -1,18 +1,34 @@
-<div class="text">
-  @for (letter of letters(); track letter.id) {
-    <div class="letter" [ngClass]="{ read: letter.id < activeLetter() }">
-      <div class="code">
-        @for (code of letter.morseCode; track $index) {
-          <span
+@for (letter of letters(); track letter.id) {
+  <div class="letter" [ngClass]="{ read: letter.id < activeLetter() }">
+    <div class="code">
+      @for (code of letter.morseCode; track $index) {
+        @if (code === '-') {
+          <svg
             [ngClass]="{
               active:
                 letter.id === activeLetter() && activeMorseCode() === $index,
             }"
-            >{{ code }}</span
+            width="20"
+            height="6"
+            xmlns="http://www.w3.org/2000/svg"
           >
+            <rect width="12" height="2" x="4" y="2" />
+          </svg>
+        } @else {
+          <svg
+            [ngClass]="{
+              active:
+                letter.id === activeLetter() && activeMorseCode() === $index,
+            }"
+            width="12"
+            height="6"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle r="2" cx="6" cy="3" />
+          </svg>
         }
-      </div>
-      <div class="key">{{ letter.char | uppercase }}</div>
+      }
     </div>
-  }
-</div>
+    <div class="key">{{ letter.char | uppercase }}</div>
+  </div>
+}

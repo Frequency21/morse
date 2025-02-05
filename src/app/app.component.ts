@@ -12,12 +12,13 @@ import {
   tap,
 } from 'rxjs';
 import { MORSE_TABLE, SPACE } from './app.constants';
-import { Letter, SentenceComponent } from './sentence/sentence.component';
 import { AudioService } from './audio.service';
+import { RevealDirective } from './reveal.directive';
+import { Letter, SentenceComponent } from './sentence/sentence.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, SentenceComponent],
+  imports: [RouterOutlet, CommonModule, SentenceComponent, RevealDirective],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   host: {
@@ -38,9 +39,7 @@ export class AppComponent {
   letter$ = new ReplaySubject<string>();
   morse$ = this.letter$.pipe(
     map((char, id) => [char, MORSE_TABLE.get(char)!, id] as const),
-    tap(([char, morseCode, id]) =>
-      this.letters.push({ id, char: char, morseCode }),
-    ),
+    tap(([char, morseCode, id]) => this.letters.push({ id, char, morseCode })),
     concatMap(([char, morseCode]) => {
       const lastIndex = morseCode.length - 1;
       return from(
