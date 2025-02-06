@@ -1,10 +1,13 @@
-import { Directive, ElementRef, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Directive, ElementRef, inject, OnInit } from '@angular/core';
 import { interval, take } from 'rxjs';
 
 @Directive({
   selector: '[appReveal]',
 })
 export class RevealDirective implements OnInit {
+  private document = inject(DOCUMENT);
+
   constructor(private elRef: ElementRef<HTMLElement>) {}
 
   ngOnInit(): void {
@@ -14,7 +17,7 @@ export class RevealDirective implements OnInit {
     if (!text) return;
     const letters: HTMLElement[] = [];
     for (const letter of text) {
-      const span = document.createElement('span');
+      const span = this.document.createElement('span');
       span.textContent = letter;
       span.style.visibility = 'hidden';
       letters.push(span);

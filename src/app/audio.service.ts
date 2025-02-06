@@ -1,33 +1,60 @@
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+
+type State =
+  | {
+      isBrowser: boolean;
+      audioContext?: AudioContext;
+      gainNode?: GainNode;
+    }
+  | {
+      isBrowser: true;
+      audioContext: AudioContext;
+      gainNode: GainNode;
+    };
+
+function isBrowserState(state: State): state is {
+  isBrowser: true;
+  audioContext: AudioContext;
+  gainNode: GainNode;
+} {
+  return state.isBrowser;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class AudioService {
-  private audioContext: AudioContext;
-  private gainNode: GainNode;
+  private state: State;
 
-  constructor() {
-    this.audioContext = new AudioContext();
-    const oscillator = this.audioContext.createOscillator();
-    this.gainNode = this.audioContext.createGain();
-    this.gainNode.gain.value = 0;
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    this.state = {
+      isBrowser: isPlatformBrowser(this.platformId),
+    };
+    if (!this.state.isBrowser) {
+      return;
+    }
+    this.state.audioContext = new AudioContext();
+    const oscillator = this.state.audioContext.createOscillator();
+    this.state.gainNode = this.state.audioContext.createGain();
+    this.state.gainNode.gain.value = 0;
     oscillator.frequency.value = 750;
-    oscillator.connect(this.gainNode);
-    this.gainNode.connect(this.audioContext.destination);
+    oscillator.connect(this.state.gainNode);
+    this.state.gainNode.connect(this.state.audioContext.destination);
     oscillator.start();
   }
 
   start() {
-    if (this.audioContext.state !== 'running') {
-      this.audioContext.resume();
+    if (!isBrowserState(this.state)) return;
+    if (this.state.audioContext.state !== 'running') {
+      this.state.audioContext.resume();
     }
-    this.gainNode.gain.value = 0.05;
+    this.state.gainNode.gain.value = 0.05;
   }
 
   stop() {
-    if (this.gainNode) {
-      this.gainNode.gain.value = 0;
+    if (this.state.gainNode) {
+      this.state.gainNode.gain.value = 0;
     }
   }
 }

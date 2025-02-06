@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { CommonModule, DOCUMENT } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {
   concatMap,
@@ -26,11 +26,12 @@ import { Letter, SentenceComponent } from './sentence/sentence.component';
     '(document:keydown)': 'onKeyboardDown($event)',
   },
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   letters: Letter[] = [];
   activeLetter = 0;
   activeMorseCode = 0;
   private audioService = inject(AudioService);
+  private document = inject(DOCUMENT);
   private dit = 1000;
   private dah = 3 * this.dit;
   private pause = 1000;
@@ -78,7 +79,7 @@ export class AppComponent {
     ['space'],
   ];
 
-  constructor() {
+  ngOnInit(): void {
     this.morse$.subscribe();
   }
 
@@ -114,13 +115,17 @@ export class AppComponent {
   onKeyboardUp(event: KeyboardEvent) {
     const key = this.keyboardEventToChar(event);
     if (!key) return;
-    document.querySelector(`[data-letter=${key}]`)?.classList.remove('pressed');
+    this.document
+      .querySelector(`[data-letter=${key}]`)
+      ?.classList.remove('pressed');
     this.letter$.next(key);
   }
 
   onKeyboardDown(event: KeyboardEvent) {
     const key = this.keyboardEventToChar(event);
     if (!key) return;
-    document.querySelector(`[data-letter=${key}]`)?.classList.add('pressed');
+    this.document
+      .querySelector(`[data-letter=${key}]`)
+      ?.classList.add('pressed');
   }
 }
