@@ -1,4 +1,6 @@
 export const SPACE = '␣';
+export const BACK_SPACE = '⌫';
+export const CLEAR = '∅';
 
 export const MORSE_TABLE = new Map<string, string>([
   ['a', '.-'],

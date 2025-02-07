@@ -45,6 +45,7 @@ button {
     transform: translateY(-2px);
   }
 
+  &:active,
   &.pressed {
     box-shadow: #D6D6E7 0 3px 7px inset;
     transform: translateY(2px);
@@ -104,16 +105,22 @@ button {
   &:nth-child(4) {
     margin-left: math.div(5 * $grid-size-sm, 2);
 
-    >* {
-      width: 4 * $grid-size-sm + $button-size-sm;
+
+    >*:nth-child(2) {
+      width: 2 * $grid-size-sm + $button-size-sm;
       height: $button-size-sm;
+    }
+
+    >*:nth-child(1),
+    >*:nth-child(3) {
+      font-family: initial;
     }
 
     @include media.desktop() {
       margin-left: math.div(5 * $grid-size-lg, 2);
 
-      >* {
-        width: 4 * $grid-size-lg + $button-size-lg;
+      >*:nth-child(2) {
+        width: 2 * $grid-size-lg + $button-size-lg;
         height: $button-size-lg;
       }
     }
@@ -124,6 +131,10 @@ button {
 .start-typing {
   text-align: center;
   font-family: "JetBrains Mono", monospace;
-  font-size: 28px;
-  margin: 1em;
+  margin-top: 28px;
+  font-size: $font-size-sm;
+
+  @include media.desktop {
+    font-size: $font-size-lg;
+  }
 }

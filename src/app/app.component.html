@@ -3,12 +3,9 @@
     <div class="row" *ngFor="let row of keyboardRows">
       @for (btn of row; track btn) {
         <button
-          #button
+          tabindex="-1"
           [attr.data-letter]="btn"
-          (pointerdown)="onPointerDown(button)"
-          (mouseleave)="onPointerCancel(button)"
-          (pointercancel)="onPointerCancel(button)"
-          (pointerup)="onPointerUp(button, btn)"
+          (click)="onClick(btn, $event)"
           (contextmenu)="(false)"
         >
           {{ btn | uppercase }}
@@ -25,7 +22,5 @@
     [activeMorseCode]="activeMorseCode"
   ></app-sentence>
 } @else {
-  <p appReveal class="start-typing">Start Typing!</p>
+  <p *ngIf="isBrowser" appReveal class="start-typing">Start Typing!</p>
 }
-
-<router-outlet />

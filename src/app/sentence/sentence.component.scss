@@ -1,16 +1,11 @@
 @use 'media';
 
 :host {
-
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
   margin: 28px auto;
-  gap: 28px 0;
-
-  @include media.desktop {
-    max-width: 720px;
-  }
+  row-gap: 14px;
 }
 
 .letter {
