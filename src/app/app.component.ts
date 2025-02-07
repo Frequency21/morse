@@ -17,12 +17,13 @@ import { BACK_SPACE, CLEAR, MORSE_TABLE, SPACE } from './app.constants';
 import { AudioService } from './audio.service';
 import { RevealDirective } from './reveal.directive';
 import { Letter, SentenceComponent } from './sentence/sentence.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 type DeletableLetter = Letter & { delete$: ReplaySubject<void> };
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, SentenceComponent, RevealDirective],
+  imports: [CommonModule, SentenceComponent, RevealDirective, NavbarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   host: {
@@ -31,6 +32,7 @@ type DeletableLetter = Letter & { delete$: ReplaySubject<void> };
   },
 })
 export class AppComponent implements OnInit {
+  isMenuOpen = false;
   isBrowser: boolean;
   letters: DeletableLetter[] = [];
   activeLetter = 0;
@@ -46,6 +48,13 @@ export class AppComponent implements OnInit {
   clear$ = new Subject<void>();
   morse$ = () =>
     this.letter$.pipe(
+      tap({
+        subscribe: () => {
+          this.letters = [];
+          this.activeLetter = 0;
+          this.activeMorseCode = 0;
+        },
+      }),
       map((char, id) => {
         const delete$ = new ReplaySubject<void>();
         return [char, MORSE_TABLE.get(char)!, id, delete$] as const;
@@ -86,7 +95,6 @@ export class AppComponent implements OnInit {
           }),
         );
       }),
-      takeUntil(this.clear$),
     );
 
   keyboardRows = [
@@ -101,14 +109,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.morse$().subscribe();
     this.clear$.pipe(switchMap(() => this.morse$())).subscribe();
+    this.clear$.next();
   }
 
   clearLetters(): void {
-    this.letters = [];
-    this.activeLetter = -1;
-    this.activeMorseCode = 0;
     this.clear$.next();
   }
 
@@ -177,6 +182,7 @@ export class AppComponent implements OnInit {
   }
 
   onKeyboardDown(event: KeyboardEvent) {
+    if (this.isMenuOpen) return;
     const key = this.keyboardEventToChar(event);
     if (!key) return;
     this.document
