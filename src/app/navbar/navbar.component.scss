@@ -44,27 +44,40 @@
 }
 
 .overlay {
-  height: calc(100% - 50px);
+  box-sizing: border-box;
+  font-size: 32px;
   width: 0;
-  position: fixed;
+  height: 0;
+  position: absolute;
   z-index: 1;
   left: 0;
-  top: 51px;
+  top: 50px;
   background-color: var(--color-background);
   opacity: 0;
-  overflow-x: hidden;
-  transition: opacity 0.5s, color .5s, background-color .5s;
+  transition: opacity 0.5s, height 0s 0.5s, width 0s 0.5s;
 
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  justify-content: center;
-  gap: 16px;
+  gap: 0.5em;
+  padding: 1em;
+  overflow-y: auto;
 
   &.open {
     opacity: 1;
     width: 100%;
+    height: calc(100% - 50px);
+    transition: opacity 0.5s, color .5s, background-color .5s, width 0s, height 0s;
   }
+}
+
+.explanation {
+  font-size: 0.75em;
+}
+
+.graph-wrapper {
+  width: 100%;
+  text-align: center;
 }
 
 button.icon {
