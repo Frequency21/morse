@@ -7,10 +7,11 @@ import {
   Output,
   PLATFORM_ID,
 } from '@angular/core';
+import { MorseGraphComponent } from '../morse-graph/morse-graph.component';
 
 @Component({
   selector: 'app-navbar',
-  imports: [],
+  imports: [MorseGraphComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
