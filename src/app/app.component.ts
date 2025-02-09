@@ -39,9 +39,9 @@ export class AppComponent implements OnInit {
   activeMorseCode = 0;
   private audioService = inject(AudioService);
   private document = inject(DOCUMENT);
-  private dit = 1000;
+  private dit = 100;
   private dah = 3 * this.dit;
-  private pause = 1000;
+  private pause = this.dit;
   private letterPause = 3 * this.pause;
 
   letter$ = new Subject<string>();
