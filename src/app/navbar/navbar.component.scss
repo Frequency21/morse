@@ -80,6 +80,13 @@
   text-align: center;
 }
 
+app-morse-graph {
+  display: block;
+  overflow-x: auto;
+  margin-inline: -1em;
+}
+
+
 button.icon {
   font-size: 0;
   width: 24px;

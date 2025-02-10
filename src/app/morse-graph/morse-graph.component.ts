@@ -5,8 +5,5 @@ import { Component, ViewEncapsulation } from '@angular/core';
   imports: [],
   templateUrl: './morse-graph.component.html',
   encapsulation: ViewEncapsulation.None,
-  host: {
-    style: 'display: block; overflow-x: auto;',
-  },
 })
 export class MorseGraphComponent {}
