@@ -1,4 +1,7 @@
 :host {
+  position: sticky;
+  top: 0;
+  background-color: var(--color-background);
   box-sizing: border-box;
   height: 50px;
   display: flex;
@@ -66,7 +69,8 @@
   &.open {
     opacity: 1;
     width: 100%;
-    height: calc(100% - 50px);
+    height: calc(100vh - 50px);
+    height: calc(100dvh - 50px);
     transition: opacity 0.5s, color .5s, background-color .5s, width 0s, height 0s;
   }
 }
