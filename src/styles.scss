@@ -1,3 +1,5 @@
+@use 'font';
+
 @mixin light-theme-variables() {
   --color-primary: #151b23;
   --color-background: #fff;
@@ -45,7 +47,6 @@ html,
 body {
   padding: 0;
   margin: 0;
-  transition: color .5s, background-color .5s;
 }
 
 html {
@@ -53,6 +54,10 @@ html {
   background-color: var(--color-background);
   color: var(--color-primary);
   fill: var(--color-primary);
+}
+
+a {
+  -webkit-tap-highlight-color: transparent;
 }
 
 button {
@@ -64,6 +69,13 @@ button {
   padding: 0;
   margin: 0;
   border: 0;
+
+  &.icon {
+    font-size: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+  }
 }
 
 a {

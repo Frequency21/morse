@@ -1,0 +1,38 @@
+:host {
+  box-sizing: border-box;
+  font-size: 32px;
+  background-color: var(--color-background);
+
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  gap: 0.5em;
+  padding: 1em;
+  overflow-y: auto;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1em;
+}
+
+.github {
+  font-size: 0.5em;
+}
+
+.explanation {
+  font-size: 0.75em;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.graph-wrapper {
+  width: 100%;
+  text-align: center;
+}
+
+app-morse-graph {
+  display: block;
+  overflow-x: auto;
+  margin-inline: -1em;
+}

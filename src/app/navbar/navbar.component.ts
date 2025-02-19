@@ -1,27 +1,20 @@
 import { DOCUMENT, isPlatformServer } from '@angular/common';
-import {
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  Output,
-  PLATFORM_ID,
-} from '@angular/core';
-import { MorseGraphComponent } from '../morse-graph/morse-graph.component';
+import { Component, inject, PLATFORM_ID } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
-  selector: 'app-navbar',
-  imports: [MorseGraphComponent],
+  selector: 'nav[app-nav]',
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
-  @Input({ required: true }) isMenuOpen!: boolean;
-  @Output() isMenuOpenChange = new EventEmitter<boolean>();
+  isMenuOpen = false;
 
   isLightMode?: boolean;
   private platformId = inject(PLATFORM_ID);
   private document = inject(DOCUMENT);
+  private router = inject(Router);
 
   constructor() {
     if (isPlatformServer(this.platformId)) {
@@ -33,7 +26,11 @@ export class NavbarComponent {
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
-    this.isMenuOpenChange.emit(this.isMenuOpen);
+    if (this.isMenuOpen) {
+      this.router.navigate(['/about']);
+    } else {
+      this.router.navigate(['']);
+    }
   }
 
   setTheme(theme: 'dark' | 'light'): void {
