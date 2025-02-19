@@ -1,0 +1,26 @@
+<div class="keyboard">
+  <div class="row-wrapper">
+    <div class="row" *ngFor="let row of keyboardRows">
+      @for (btn of row; track btn) {
+        <button
+          tabindex="-1"
+          [attr.data-letter]="btn"
+          (click)="onClick(btn, $event)"
+          (contextmenu)="(false)"
+        >
+          {{ btn }}
+        </button>
+      }
+    </div>
+  </div>
+</div>
+
+@if (letters.length) {
+  <app-sentence
+    [letters]="letters"
+    [activeLetter]="activeLetter"
+    [activeMorseCode]="activeMorseCode"
+  ></app-sentence>
+} @else {
+  <p *ngIf="isBrowser" appReveal class="start-typing">Start Typing!</p>
+}

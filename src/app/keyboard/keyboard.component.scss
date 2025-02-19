@@ -1,0 +1,136 @@
+@use 'sass:math';
+@use 'media';
+
+$button-size-lg: 60px;
+$gap-lg: 12px;
+$grid-size-lg: $button-size-lg + $gap-lg;
+$font-size-lg: 18px;
+
+$button-size-sm: 40px;
+$gap-sm: 8px;
+$grid-size-sm: $button-size-sm + $gap-sm;
+$font-size-sm: 16px;
+
+
+button[data-letter] {
+  text-transform: uppercase;
+  background-color: #FCFCFD;
+  border-radius: 4px;
+  box-shadow: var(--box-shadow);
+  color: #36395A;
+  font-family: "JetBrains Mono", monospace;
+  transition: box-shadow .15s,
+    transform .15s;
+
+  font-size: $font-size-sm;
+  width: $button-size-sm;
+  height: $button-size-sm;
+
+  @include media.desktop {
+    font-size: $font-size-lg;
+    width: $button-size-lg;
+    height: $button-size-lg;
+  }
+
+  &:focus {
+    box-shadow: #D6D6E7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+  }
+
+  &:hover {
+    box-shadow: var(--box-shadow-hover);
+    transform: translateY(-2px);
+  }
+
+  &:active,
+  &.pressed {
+    box-shadow: #D6D6E7 0 3px 7px inset;
+    transform: translateY(2px);
+  }
+}
+
+.keyboard {
+  overflow-x: auto;
+  padding: 24px;
+
+  display: flex;
+  flex-flow: column nowrap;
+  gap: $gap-sm;
+
+  @include media.desktop() {
+    gap: $gap-lg;
+  }
+}
+
+.row-wrapper {
+  margin: auto;
+}
+
+.row {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: $gap-sm;
+
+  &:not(:last-child) {
+    margin-bottom: $gap-sm;
+  }
+
+  @include media.desktop() {
+    gap: $gap-lg;
+
+    &:not(:last-child) {
+      margin-bottom: $gap-lg;
+    }
+  }
+
+  &:nth-child(2) {
+    margin-left: math.div($grid-size-sm, 2);
+
+    @include media.desktop() {
+      margin-left: math.div($grid-size-lg, 2);
+    }
+  }
+
+  &:nth-child(3) {
+    margin-left: math.div(3 * $grid-size-sm, 2);
+
+    @include media.desktop() {
+      margin-left: math.div(3 * $grid-size-lg, 2);
+    }
+  }
+
+  &:nth-child(4) {
+    margin-left: math.div(5 * $grid-size-sm, 2);
+
+
+    >*:nth-child(2) {
+      width: 2 * $grid-size-sm + $button-size-sm;
+      height: $button-size-sm;
+    }
+
+    >*:nth-child(1),
+    >*:nth-child(3) {
+      font-family: initial;
+    }
+
+    @include media.desktop() {
+      margin-left: math.div(5 * $grid-size-lg, 2);
+
+      >*:nth-child(2) {
+        width: 2 * $grid-size-lg + $button-size-lg;
+        height: $button-size-lg;
+      }
+    }
+
+  }
+}
+
+.start-typing {
+  text-align: center;
+  font-family: "JetBrains Mono", monospace;
+  margin-top: 28px;
+  font-size: $font-size-sm;
+
+  @include media.desktop {
+    font-size: $font-size-lg;
+  }
+}
