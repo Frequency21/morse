@@ -1,10 +1,10 @@
 import { DOCUMENT, isPlatformServer } from '@angular/common';
 import { Component, inject, PLATFORM_ID } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
-  selector: 'app-navbar',
-  imports: [],
+  selector: 'nav[app-nav]',
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })

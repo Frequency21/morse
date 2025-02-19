@@ -1,5 +1,25 @@
 <div class="span"></div>
 
+<ul class="menu">
+  <li>
+    <a
+      class="open-sans-700-bold"
+      [routerLink]="['']"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Playground</a
+    >
+  </li>
+  <li>
+    <a
+      class="open-sans-700-bold"
+      [routerLink]="['/about']"
+      routerLinkActive="active"
+      >About</a
+    >
+  </li>
+</ul>
+
 @if (isLightMode) {
   <button class="icon" (click)="setTheme('dark')">
     <svg
@@ -45,8 +65,3 @@
   </button>
 }
 
-<button #menu (click)="toggleMenu()" class="menu" [class.open]="isMenuOpen">
-  <div class="bar1"></div>
-  <div class="bar2"></div>
-  <div class="bar3"></div>
-</button>

@@ -2,7 +2,6 @@
   box-sizing: border-box;
   font-size: 32px;
   background-color: var(--color-background);
-  transition: color .5s, background-color .5s;
 
   display: flex;
   flex-flow: column nowrap;
@@ -12,8 +11,19 @@
   overflow-y: auto;
 }
 
+h1 {
+  margin: 0;
+  font-size: 1em;
+}
+
+.github {
+  font-size: 0.5em;
+}
+
 .explanation {
   font-size: 0.75em;
+  line-height: 1.5;
+  margin: 0;
 }
 
 .graph-wrapper {
