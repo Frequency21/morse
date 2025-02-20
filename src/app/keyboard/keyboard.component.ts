@@ -144,6 +144,7 @@ export class KeyboardComponent implements OnDestroy {
   }
 
   onClick(key: string, event: Event): void {
+    event.stopPropagation();
     (event.target as HTMLElement)?.blur();
     if (key === 'space') {
       key = SPACE;
