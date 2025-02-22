@@ -1,25 +1,17 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 
-type State =
-  | {
-      isBrowser: boolean;
-      audioContext?: AudioContext;
-      gainNode?: GainNode;
-    }
-  | {
-      isBrowser: true;
-      audioContext: AudioContext;
-      gainNode: GainNode;
-    };
-
-function isBrowserState(state: State): state is {
+type BrowserState = {
   isBrowser: true;
   audioContext: AudioContext;
   gainNode: GainNode;
-} {
-  return state.isBrowser;
-}
+};
+
+type ServerState = {
+  isBrowser: false;
+};
+
+type State = BrowserState | ServerState;
 
 @Injectable({
   providedIn: 'root',
@@ -28,24 +20,28 @@ export class AudioService {
   private state: State;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
-    this.state = {
-      isBrowser: isPlatformBrowser(this.platformId),
+    const setupAudio = (isBrowser: boolean): State => {
+      if (!isBrowser) {
+        return { isBrowser };
+      }
+
+      const audioContext = new AudioContext();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      gainNode.gain.value = 0;
+      oscillator.frequency.value = 750;
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      oscillator.start();
+
+      return { isBrowser, audioContext, gainNode };
     };
-    if (!this.state.isBrowser) {
-      return;
-    }
-    this.state.audioContext = new AudioContext();
-    const oscillator = this.state.audioContext.createOscillator();
-    this.state.gainNode = this.state.audioContext.createGain();
-    this.state.gainNode.gain.value = 0;
-    oscillator.frequency.value = 750;
-    oscillator.connect(this.state.gainNode);
-    this.state.gainNode.connect(this.state.audioContext.destination);
-    oscillator.start();
+
+    this.state = setupAudio(isPlatformBrowser(this.platformId));
   }
 
   start() {
-    if (!isBrowserState(this.state)) return;
+    if (!this.state.isBrowser) return;
     if (this.state.audioContext.state !== 'running') {
       this.state.audioContext.resume();
     }
@@ -53,6 +49,7 @@ export class AudioService {
   }
 
   stop() {
+    if (!this.state.isBrowser) return;
     if (this.state.gainNode) {
       this.state.gainNode.gain.value = 0;
     }
