@@ -1,59 +1,25 @@
 # Morse
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.7.
+[![Deploy](https://github.com/Frequency21/morse/actions/workflows/firebase-hosting-merge.yml/badge.svg?branch=main)](https://morse-visualiser.web.app)
+[![Code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
-## Development server
+Try online: https://morse-visualiser.web.app
 
-To start a local development server, run:
+[Morse Playground](sample.webm)
 
-```bash
-ng serve
-```
+## Features ⭐
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- **Type** characters by either clicking, tapping or typing.
+- **Delete** unplayed characters using the backspace key.
+- **Reset** the playground with the `Shift+C` shortcut.
+- Played characters are greyed out, active characters are colored red.
+- Learn more about Morse Coding at the about page.
+- Plays audio.
+- Mobile friendly.
 
-## Code scaffolding
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Future Features 🚀
 
-```bash
-ng generate component component-name
-```
+- Join a lobby, play a character for each other and try to guess which character was played.
+- Play against the computer.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
