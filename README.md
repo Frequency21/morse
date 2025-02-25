@@ -1,7 +1,11 @@
-# Morse
+<div align="center">
+
+# Morse Playground
 
 [![Deploy](https://github.com/Frequency21/morse/actions/workflows/firebase-hosting-merge.yml/badge.svg?branch=main)](https://morse-visualiser.web.app)
 [![Code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+
+</div>
 
 Try it online, don't forget to turn on the audio: https://morse-visualiser.web.app
 
